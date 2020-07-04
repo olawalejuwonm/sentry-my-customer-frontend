@@ -146,11 +146,11 @@
                             <tbody>
                                 @foreach ($analytics['transactions'] as $item)
                                     <tr>
-                                        <td>#{{ $item->_id }}</td>
+                                        <td>#{{ Str::substr($item->_id, 0, 4) }}</td>
                                         <td>{{ $item->type }}</td>
                                         <td>{{ $item->customer->name ?? "Admin" }}</td>
                                         <td>{{ "NGN" . $item->total_amount }}</td>
-                                        <td> <a href="{{ url('transaction/'.$item->_id) }}"><span class="badge badge-soft-warning py-1">View</span></a> </td>
+                                        <td> <a href="{{ route('transaction.show', ['transaction' => $item->_id]) }}"><span class="badge badge-soft-warning py-1">View</span></a> </td>
                                     </tr>
                                 @endforeach
                             </tbody>
