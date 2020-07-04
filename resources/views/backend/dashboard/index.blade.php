@@ -50,12 +50,15 @@
                         <div class="media-body">
                             <span class="text-muted text-uppercase font-size-12 font-weight-bold">Today
                                 Revenue</span>
-                            <h2 class="mb-0">$2189</h2>
+                            <h2 class="mb-0">
+                                {{ "$" . $analytics['revenue'] }}
+                            </h2>
                         </div>
                         <div class="align-self-center">
                             <div id="today-revenue-chart" class="apex-charts"></div>
                             <span class="text-success font-weight-bold font-size-13"><i class='uil uil-arrow-up'></i>
-                                10.21%</span>
+                                10.21% <!-- TODO:calculate percentage increase-->
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -69,7 +72,7 @@
                         <div class="media-body">
                             <span class="text-muted text-uppercase font-size-12 font-weight-bold">Product
                                 Sold</span>
-                            <h2 class="mb-0">1065</h2>
+                            <h2 class="mb-0">{{ $analytics['products'] }}</h2>
                         </div>
                         <div class="align-self-center">
                             <div id="today-product-sold-chart" class="apex-charts"></div>

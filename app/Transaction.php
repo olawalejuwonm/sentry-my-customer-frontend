@@ -1,11 +1,12 @@
 <?php
 
 namespace App;
-
-use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Model;
 
 class Transaction extends Model
 {
+    protected $dates = ['createdAt']; //convert Mongo Date to Carbon/DateTime
+
     public function index(){
         // return 
     }
