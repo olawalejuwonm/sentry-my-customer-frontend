@@ -123,44 +123,12 @@
         </div>
     </div>
 
-    <!-- stats + charts -->
-    {{-- <div class="row">
-        <div class="col-xl-5">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title mt-0 mb-0 header-title">Transaction Overview</h5>
-                    <div id="sales-by-category-chart" class="apex-charts mb-0 mt-4" dir="ltr"></div>
-                </div> <!-- end card-body-->
-            </div> <!-- end card-->
-        </div> <!-- end col-->
-
-        <div class="col-xl-7">
-            <div class="card">
-                <div class="card-body pb-0">
-
-                    <h5 class="card-title mb-0 header-title">Revenue Overview</h5>
-
-                    <div id="revenue-chart" class="apex-charts mt-3" dir="ltr"></div>
-                </div>
-            </div>
-        </div>
-
-
-    </div> --}}
-    <!-- row -->
-
     <!-- products -->
     <div class="row">
 
         <div class="col-xl-7">
             <div class="card">
                 <div class="card-body">
-                    <a href="#" class="btn btn-primary btn-sm float-right">
-                        <i class='uil uil-export ml-1'></i> Export
-                    </a>
-                    <a href="#" class="btn btn-primary btn-sm float-right">
-                        View All
-                    </a>
                     <h5 class="card-title mt-0 mb-0 header-title">Recent Transactions</h5>
 
                     <div class="table-responsive mt-4">
@@ -176,34 +144,15 @@
                             </thead>
                             
                             <tbody>
-                                <tr>
-                                    <td>#98754</td>
-                                    <td>Debt</td>
-                                    <td>Otto B</td>
-                                    <td>$79.49</td>
-                                    <td> <a href="#"><span class="badge badge-soft-warning py-1">View</span></a> </td>
-                                </tr>
-                                <tr>
-                                    <td>#98754</td>
-                                    <td>Debt</td>
-                                    <td>Otto B</td>
-                                    <td>$79.49</td>
-                                    <td> <a href="#"><span class="badge badge-soft-warning py-1">View</span></a> </td>
-                                </tr>
-                                <tr>
-                                    <td>#98754</td>
-                                    <td>Debt</td>
-                                    <td>Otto B</td>
-                                    <td>$79.49</td>
-                                    <td> <a href="#"><span class="badge badge-soft-warning py-1">View</span></a> </td>
-                                </tr>
-                                <tr>
-                                    <td>#98754</td>
-                                    <td>Debt</td>
-                                    <td>Otto B</td>
-                                    <td>$79.49</td>
-                                    <td> <a href="#"><span class="badge badge-soft-warning py-1">View</span></a> </td>
-                                </tr>
+                                @foreach ($analytics['transactions'] as $item)
+                                    <tr>
+                                        <td>#{{ $item->_id }}</td>
+                                        <td>{{ $item->type }}</td>
+                                        <td>{{ $item->user_ref_id }}</td>
+                                        <td>{{ "NGN" . $item->total_amount }}</td>
+                                        <td> <a href="{{ url('transaction/'.$item->_id) }}"><span class="badge badge-soft-warning py-1">View</span></a> </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div> <!-- end table-responsive-->

@@ -13,6 +13,7 @@ class DashboardController extends Controller
         $analytics['revenue'] = $this->todayRevenue();
         $analytics['products'] = $this->productsSold();
         $analytics['customers'] = $this->newCustomers();
+        $analytics['transactions'] = $this->recentTransactions();
         return view('backend.dashboard.index')->with('analytics', $analytics);
     }
 
@@ -26,7 +27,12 @@ class DashboardController extends Controller
     }
 
     public function newCustomers(){
-        return Customer::where('createdAt', '<=', new DateTime('last week'))
+        return Customer::where('createdAt', '>', new DateTime('last week'))
                         ->count();
+    }
+
+    public function recentTransactions(){
+        return Transaction::where('createdAt', '>', new DateTime('last week'))
+                            ->limit(6)->get();
     }
 }
