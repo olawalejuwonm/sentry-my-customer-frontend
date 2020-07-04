@@ -9,6 +9,7 @@ use Illuminate\Pagination\LengthAwarePaginator as Paginator; // NAMESPACE FOR PA
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
+use App\Store;
 
 class CustomerController extends Controller
 {
@@ -20,9 +21,15 @@ class CustomerController extends Controller
      */
     public function index( Request $request )
     {
-        $customers = Customer::paginate(10);
+        $collection['customers'] = Customer::whereIn('store', 
+                        Store::where('store_admin', 
+                                    Cookie::get('user_id')
+                                )->pluck('_id')
+                    )->paginate(10);
 
-        return view('backend.customer.index')->with('customers', $customers);
+        $collection['stores'] = Store::where('store_admin', Cookie::get('user_id'))->get();
+
+        return view('backend.customer.index')->with('collection', $collection);
     }
 
     /**
@@ -43,104 +50,27 @@ class CustomerController extends Controller
      */
     public function create_customer(Request $request)
     {
-        //
-        try {
-            $client = new Client;
-            $inputs = [
-                'phone_number' => $request->phone,
-                'name' => $request->name
-            ];
-            $payload = [
-                'headers' => [
-                    'x-access-token' => Cookie::get('api_token')
-                ],
-                'form_params' => [
-                    'phone' => $request->phone,
-                    'name' => $request->name
-                ]
-            ];
-
-            $url = $this->host.'customer/new';
-            $response = $client->request("POST", $url, $payload);
-            $data = json_decode($response->getBody());
-
-            if ( $response->getStatusCode() == 200 ) {
-                $request->session()->flash('alert-class', 'alert-success');
-                $request->session()->flash('message', 'Customer created successfully');
-            } else {
-                $request->session()->flash('alert-class', 'alert-danger');
-                $request->session()->flash('message', $data->message || 'An error occured');
-            }
-
-            return redirect()->route('customers');
-        } catch ( \Exception $e ) {
-            $data = json_decode($e->getBody()->getContents());
-            $request->session()->flash('alert-class', 'alert-danger');
-            $request->session()->flash('message', $data->message);
-
-            return redirect()->route('customers');
-        }
+        return Customer::create([
+            'name' => $request->name,
+            'phone_number' => $request->phone_number,
+            'store' => $request->store_name,
+            'email' => $request->email,
+        ]);
     }
         
     public function store(Request $request)
     {
-        //
-        $url = env('API_URL', 'https://dev.api.customerpay.me') . '/customer/new/';
 
-        if ($request->isMethod('post')) {
-            $request->validate([
-                'store_name' => 'required',
-                'phone_number' =>  'required',
-                'name' => 'required',
-            ]);
+        $validated = $request->validate([
+            'name' => 'required',
+            'phone_number' => 'required',
+            'store' => 'required',
+            'email' => 'required|unique:customers,email',
+        ]);
 
-            try {
+        Customer::create($validated);
 
-                $client =  new Client();
-                $payload = [
-                    'headers' => ['x-access-token' => Cookie::get('api_token')],
-                    'form_params' => [
-                        'store_name' => $request->input('store_name'),
-                        'phone_number' => $request->input('phone_number'),
-                        'name' => $request->input('name'),
-                    ],
-
-                ];
-
-                $response = $client->request("POST", $url, $payload);
-
-                $statusCode = $response->getStatusCode();
-                $body = $response->getBody();
-                $data = json_decode($body);
-
-                if ($statusCode == 201  && $data->success) {
-                    $request->session()->flash('alert-class', 'alert-success');
-                    Session::flash('message', $data->message);
-                    // return $this->index();
-                } else {
-                    $request->session()->flash('alert-class', 'alert-waring');
-                    Session::flash('message', $data->message);
-                    return redirect()->view('backend.customer.create');
-                }
-            } catch (RequestException $e) {
-                $response = $e->getResponse();
-                $statusCode == $response->getStatusCode();
-
-                if ($statusCode  == 500) {
-                    Log::error((string) $response->getBody());
-                    return view('errors.500');
-                }
-
-                $data = json_decode($response->getBody());
-                Session::flash('message', $data->message);
-                return redirect()->route('store.create');
-            } catch (Exception $e) {
-                Log::error((string) $response->getBody());
-                return view('errors.500');
-            }
-        }
-
-        return view('backend.customer.index');
+        return redirect()->route('customer.index')->with('success-alert', 'Your customer was successfully created');
     }
 
     /**

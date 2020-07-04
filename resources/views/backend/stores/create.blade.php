@@ -31,6 +31,11 @@
                     </div>
                 @endif
 
+                @if(session('success-alert'))
+                    <div class="alert alert-success">
+                        {{ session('success-alert') }}
+                    </div>
+                @endif
                 <div class="row">
                      <div class="col-lg-12">
                          <div class="card">
@@ -50,7 +55,7 @@
                                         <div class="form-row">
                                           <div class="form-group col-md-6">
                                             <label for="inputPhoneNumber">Phone Number</label>
-                                            <input type="text" name="phone_number" class="form-control" placeholder="+1(234) 567-8907" >
+                                            <input type="tel" name="phone_number" class="form-control" placeholder="+1(234) 567-8907" >
                                           </div>
                                         <div class="form-group col-md-6" >
                                             <label for="inputEmailAddress"> Email Address (optional) </label>

@@ -20,10 +20,12 @@
                 </div>
             </div>
         </div>
-        @if(Session::has('message'))
-        <p class="alert {{ Session::get('alert-class', 'alert-danger') }}">{{ Session::get('message') }}</p>
+        @if(session('success-alert'))
+            <div class="alert alert-success">
+                {{ session('success-alert') }}
+            </div>
         @endif
-
+        
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>

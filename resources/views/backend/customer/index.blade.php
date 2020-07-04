@@ -18,6 +18,11 @@
                     New &nbsp;<i class="fa fa-plus my-float"></i>
                 </a>
             </div>
+            @if(session('success-alert'))
+                <div class="alert alert-success">
+                    {{ session('success-alert') }}
+                </div>
+            @endif
         </div>
 
         <div class="row">
@@ -88,7 +93,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($customers as $key => $customer)
+                                        @foreach ($collection['customers'] as $key => $customer)
                                         <tr>
                                             <td scope="row">{{ $key }}</td>
                                             
@@ -116,7 +121,7 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                                {{ $customers->links() }}
+                                {{ $collection['customers']->links() }}
                             </div>
                         </div>
 
@@ -312,35 +317,41 @@
             </div>
 
             <div class="modal-body">
-                <form class="form-horizontal" method="POST" action="/admin/customer">
+                <form class="form-horizontal" method="POST" action="{{ route('customer.store') }}">
                     @csrf
                     <div class="form-group row mb-3">
-                        <label for="inputphone" class="col-3 col-form-label">Phone Number</label>
+                        <label for="phone_number" class="col-3 col-form-label">Phone Number</label>
                         <div class="col-9">
-                            <input type="number" class="form-control" id="inputphone" placeholder="Phone Number"
+                            <input type="number" class="form-control" id="phone_number" placeholder="Phone Number"
                                 name="phone_number">
                         </div>
                     </div>
                     <div class="form-group row mb-3">
                         <label for="inputPassword3" class="col-3 col-form-label">Customer Name</label>
                         <div class="col-9">
-                            <input type="text" class="form-control" id="inputPassword3" placeholder="Customer name"
+                            <input type="text" class="form-control" id="name" placeholder="Customer name"
                                 name="name">
                         </div>
                     </div>
                     <div class="form-group row mb-3">
                         <label for="inputPassword3" class="col-3 col-form-label">Store Name</label>
                         <div class="col-9">
-                            <input type="text" class="form-control" id="inputPassword3" placeholder="Store name"
-                                name="store_name">
+                            <select name="store" id="store" class="form-control">
+                                @foreach ($collection['stores'] as $store)
+                                    <option value="{{ $store->_id }}">
+                                        {{ $store->store_name }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
-                    <!-- <div class="form-group row mb-3">
-                            <label for="inputPassword5" class="col-3 col-form-label">Re Password</label>
-                            <div class="col-9">
-                                <input type="password" class="form-control" id="inputPassword5" placeholder="Retype Password" name="repassword">
-                            </div>
-                        </div> -->
+
+                    <div class="form-group row mb-3">
+                        <label for="inputPassword5" class="col-3 col-form-label">Email</label>
+                        <div class="col-9">
+                            <input type="email" class="form-control" id="email" placeholder="Customer email" name="email">
+                        </div>
+                    </div> 
                     <div class="form-group mb-0 justify-content-end row">
                         <div class="col-9">
                             <button type="submit" class="btn btn-primary btn-block ">Create User</button>
@@ -355,93 +366,6 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<div id="DebtModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel">Add New Debtor</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form class="form-horizontal">
-                    <div class="form-group row mb-3">
-                        <label for="inputphone" class="col-3 col-form-label">Phone Number</label>
-                        <div class="col-9">
-                            <input type="number" class="form-control" id="inputphone" placeholder="Phone Number">
-                        </div>
-                    </div>
-                    <div class="form-group row mb-3">
-                        <label for="inputPassword3" class="col-3 col-form-label">Password</label>
-                        <div class="col-9">
-                            <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
-                        </div>
-                    </div>
-                    <div class="form-group row mb-3">
-                        <label for="inputPassword5" class="col-3 col-form-label">Re Password</label>
-                        <div class="col-9">
-                            <input type="password" class="form-control" id="inputPassword5"
-                                placeholder="Retype Password">
-                        </div>
-                    </div>
-                    <div class="form-group mb-0 justify-content-end row">
-                        <div class="col-9">
-                            <button type="submit" class="btn btn-primary btn-block ">Create User</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-            </div>
-
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-<div id="CreditModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel">Add New Creditor</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form class="form-horizontal">
-                    <div class="form-group row mb-3">
-                        <label for="inputphone" class="col-3 col-form-label">Phone Number</label>
-                        <div class="col-9">
-                            <input type="number" class="form-control" id="inputphone" placeholder="Phone Number">
-                        </div>
-                    </div>
-                    <div class="form-group row mb-3">
-                        <label for="inputPassword3" class="col-3 col-form-label">Password</label>
-                        <div class="col-9">
-                            <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
-                        </div>
-                    </div>
-                    <div class="form-group row mb-3">
-                        <label for="inputPassword5" class="col-3 col-form-label">Re Password</label>
-                        <div class="col-9">
-                            <input type="password" class="form-control" id="inputPassword5"
-                                placeholder="Retype Password">
-                        </div>
-                    </div>
-                    <div class="form-group mb-0 justify-content-end row">
-                        <div class="col-9">
-                            <button type="submit" class="btn btn-primary btn-block ">Create User</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-            </div>
-
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
 @endsection
 
 
