@@ -91,6 +91,19 @@ return [
             'prefix_indexes' => true,
         ],
 
+        'mongodb' => [
+            'driver' => 'mongodb',
+            'dsn' => env('DATABASE_URL'), //we are primarily using this for the project
+            'database' => env('DB_DATABASE', 'MyCustomer'),
+            'options' => [
+                // here you can pass more settings to the Mongo Driver Manager
+                // see https://www.php.net/manual/en/mongodb-driver-manager.construct.php 
+                //under "Uri Options" for a list of complete parameters that you can use
+        
+                'database' => env('DB_AUTHENTICATION_DATABASE', 'admin'), // required with Mongo 3+
+            ],
+        ],
+
     ],
 
     /*
