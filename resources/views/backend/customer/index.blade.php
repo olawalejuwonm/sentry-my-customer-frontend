@@ -66,45 +66,14 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <ul class="nav nav-pills navtab-bg nav-justified" id="pills-tab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="pills-activity-tab" data-toggle="pill" href="#pills-activity"
-                                role="tab" aria-controls="pills-activity" aria-selected="true">
-                                Debtors
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="pills-messages-tab" data-toggle="pill" href="#pills-messages"
-                                role="tab" aria-controls="pills-messages" aria-selected="false">
-                                Creditors
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="pills-projects-tab" data-toggle="pill" href="#pills-projects"
-                                role="tab" aria-controls="pills-projects" aria-selected="false">
-                                All Customers
-                            </a>
-                        </li>
-                    </ul>
-
                     <div class="tab-content" id="pills-tabContent">
                         <div class="tab-pane fade show active" id="pills-activity" role="tabpanel"
                             aria-labelledby="pills-activity-tab">
                             <div class="row">
                                 <div class="col-md-7 col-sm-6">
                                     <p class="sub-header float-left">
-                                        List of Debtors
+                                        Showing all customers
                                     </p>
-                                    <p class="sub-header float-right">
-                                        <span class="badge badge-pill badge-soft-dark">Customers Owe you: &#8358;
-                                            3500</span>
-                                    </p>
-                                </div>
-                                <div class="col-md-5 col-sm-6">
-                                    <a href="#" class="btn btn-sm btn-primary float-right" data-toggle="modal"
-                                        data-target="#DebtModal">
-                                        <i class="fa fa-plus my-float"></i>
-                                    </a>
                                 </div>
                             </div>
                             <div class="table-responsive">
@@ -112,30 +81,21 @@
                                     <thead>
                                         <tr>
                                             <th scope="col">ID</th>
-                                            <th scope="col">Avatar</th>
                                             <th scope="col">Name</th>
                                             <th scope="col">Tel</th>
-                                            <th scope="col">Debt</th>
-                                            <th scope="col">Balance</th>
+                                            <th scope="col">Email</th>
                                             <th scope="col">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @foreach ($customers as $key => $customer)
                                         <tr>
-                                            <td scope="row">1</td>
-                                            <td><img src="/backend/assets/images/users/avatar-1.jpg"
-                                                    class="avatar-sm rounded-circle" alt="Shreyu" /></td>
-                                            <td>John Doe <br>
-                                                <span class="badge badge-success">Has debt</span>
-                                            </td>
-                                            <td>+234 90 000 000 00<br>
-                                            </td>
-                                            <td>
-                                                <span> &#8358; 6 000</span> <br>
-                                                <span class="badge badge-primary">Paid: 3 500</span>
-                                            </td>
-                                            <td>
-                                                <span class="text-success">&#8358; 2 500</span>
+                                            <td scope="row">{{ $key }}</td>
+                                            
+                                            <td> {{ $customer->name }} </td>
+
+                                            <td>{{ $customer->phone_number }}<br>
+                                                <td>{{ $customer->email }}<br>
                                             </td>
                                             <td>
                                                 <div class="btn-group mt-2 mr-1">
@@ -146,51 +106,17 @@
                                                                 data-feather="chevron-down"></span></i>
                                                     </button>
                                                     <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="{{ route('customer.edit', 2) }}">Edit Customer</a>
-                                                        <a class="dropdown-item" href="{{ route('customer.show', 2) }}">ViewProfile</a>
-                                                        <a class="dropdown-item" href="{{ route('transaction.show', 2) }}">ViewTransaction</a>
-                                                        <a class="dropdown-item" href="{{ route('debtor.create') }}">SendReminder</a>
+                                                        <a class="dropdown-item" href="{{ route('customer.edit', ['customer' => $customer->_id]) }}">Edit Customer</a>
+                                                        <a class="dropdown-item" href="{{ route('customer.show', ['customer' => $customer->_id]) }}">ViewProfile</a>
+                                                        {{-- <a class="dropdown-item" href="{{ route('transaction.show', ['customer' => $customer->_id]) }}">ViewTransaction</a> --}}
                                                     </div>
                                                 </div>
                                             </td>
                                         </tr>
-
-                                        <tr>
-                                            <td scope="row">2</td>
-                                            <td><img src="/backend/assets/images/users/avatar-6.jpg"
-                                                    class="avatar-sm rounded-circle" alt="Shreyu" /></td>
-                                            <td>Mary Doe <br>
-                                                <span class="badge badge-success">Has Debt</span>
-                                            </td>
-                                            <td>+44 0000 123456 <br>
-                                            </td>
-                                            <td>
-                                                <span> &#8358; 10 000</span> <br>
-                                                <span class="badge badge-primary">Paid: 9 000</span>
-                                            </td>
-                                            <td>
-                                                <span class="text-success">&#8358; 1 000</span>
-                                            </td>
-                                            <td>
-                                                <div class="btn-group mt-2 mr-1">
-                                                    <button type="button" class="btn btn-primary dropdown-toggle"
-                                                        data-toggle="dropdown" aria-haspopup="true"
-                                                        aria-expanded="false">
-                                                        Actions<i class="icon"><span
-                                                                data-feather="chevron-down"></span></i>
-                                                    </button>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a class="dropdown-item" href="{{ route('customer.edit', 1) }}">Edit Customer</a>
-                                                        <a class="dropdown-item" href="{{ route('customer.show', 1) }}">ViewProfile</a>
-                                                        <a class="dropdown-item" href="{{ route('transaction.show', 1) }}">ViewTransaction</a>
-                                                        <a class="dropdown-item" href="{{ route('debtor.create') }}">SendReminder</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-
+                                        @endforeach
                                     </tbody>
                                 </table>
+                                {{ $customers->links() }}
                             </div>
                         </div>
 
