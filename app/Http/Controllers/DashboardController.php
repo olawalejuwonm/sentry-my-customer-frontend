@@ -27,12 +27,12 @@ class DashboardController extends Controller
     }
 
     public function newCustomers(){
-        return Customer::where('createdAt', '>', new DateTime('last week'))
+        return Customer::where('createdAt', '>', new DateTime('- 1 week'))
                         ->count();
     }
 
     public function recentTransactions(){
-        return Transaction::where('createdAt', '>', new DateTime('last week'))
+        return Transaction::where('createdAt', '>' ,new DateTime('- 1 week'))
                             ->limit(6)->get();
     }
 }

@@ -148,7 +148,7 @@
                                     <tr>
                                         <td>#{{ $item->_id }}</td>
                                         <td>{{ $item->type }}</td>
-                                        <td>{{ $item->user_ref_id }}</td>
+                                        <td>{{ $item->customer->name ?? "Admin" }}</td>
                                         <td>{{ "NGN" . $item->total_amount }}</td>
                                         <td> <a href="{{ url('transaction/'.$item->_id) }}"><span class="badge badge-soft-warning py-1">View</span></a> </td>
                                     </tr>
