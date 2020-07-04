@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Transaction;
+use App\Customer;
 use DateTime;
 use Illuminate\Http\Request;
 
@@ -26,6 +27,6 @@ class DashboardController extends Controller
 
     public function newCustomers(){
         return Customer::where('createdAt', '<=', new DateTime('last week'))
-                        ->get();
+                        ->count();
     }
 }

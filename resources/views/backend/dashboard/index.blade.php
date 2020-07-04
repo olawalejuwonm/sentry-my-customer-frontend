@@ -91,7 +91,7 @@
                         <div class="media-body">
                             <span class="text-muted text-uppercase font-size-12 font-weight-bold">New
                                 Customers</span>
-                            <h2 class="mb-0">11</h2>
+                            <h2 class="mb-0">{{ $analytics['customers'] }}</h2>
                         </div>
                         <div class="align-self-center">
                             <div id="today-new-customer-chart" class="apex-charts"></div>
