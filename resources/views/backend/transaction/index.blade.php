@@ -288,9 +288,11 @@
         var token = "{{Cookie::get('api_token')}}"
         $('select[name="store"]').on('change', function () {
             var storeID = $(this).val();
+            var host = "{{ env('API_URL', 'https://dev.api.customerpay.me') }}";
+
             if (storeID) {
                 jQuery.ajax({
-                    url: "https://dev.api.customerpay.me/store/" + encodeURI(storeID),
+                    url: host + "/store/" + encodeURI(storeID),
                     type: "GET",
                     dataType: "json",
                     contentType: 'json',
@@ -311,6 +313,37 @@
                 });
             } else {
                 $('select[name="store"]').empty();
+            }
+        });
+
+        $('.updateStatus').on('change', function () {
+            var status = $(this).prop('checked') == true ? 1 : 0;
+            var tran_id = $(this).data('id');
+            var store_id = $(this).data('store');
+            var customer_id = $(this).data('customer');
+            var host = "{{ env('API_URL', 'https://dev.api.customerpay.me') }}";
+
+            if (tran_id) {
+                jQuery.ajax({
+                    url: host + "/transaction/update/" + encodeURI(tran_id),
+                    type: "PATCH",
+                    dataType: "json",
+                    contentType: 'json',
+                    headers: {
+                        'x-access-token': token
+                    },
+                    data: {
+                        'status': status,
+                        // 'tran_id': tran_id,
+                        'store_id': store_id,
+                        'customer_id': customer_id
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        var new_data = data.data.store.customers;
+                        var i;
+                    }
+                });
             }
         });
     });
